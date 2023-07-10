@@ -1,0 +1,5 @@
+{
+    "provide": [
+        "src/qlpack.yml"
+    ]
+}

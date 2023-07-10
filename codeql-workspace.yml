@@ -1,0 +1,6 @@
+{
+    "provide": [
+        "cpp/codeql-workspace.yml",
+        "java/codeql-workspace.yml"
+    ]
+}

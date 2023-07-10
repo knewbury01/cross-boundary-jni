@@ -1,0 +1,4 @@
+name: cross-boundary-queries/back-end
+version: 0.0.0
+dependencies:
+  codeql/cpp-all: "0.7.2"
