@@ -35,6 +35,8 @@ class FlowSummary extends ExternalData {
     int getSourceIndex() { result = this.getFieldAsInt(6)-2 }
 
     string getSinkIdentifier() { result = this.getField(7) }
+
+    int getSinkIndex() { result = this.getFieldAsInt(8)-2 }
     
 }
 
@@ -116,8 +118,13 @@ class FrontEndConfig extends TaintTracking::Configuration {
         or
         exists(MethodAccess a, JNISourceMethod m | 
             a.getMethod() = m 
-            and m.getFlowSummary().getSinkConnected() = 1 
-            and a = node.asExpr()
+            //sinkConnected = 1 : return value, sinkConnected = 2 : arg value from a heap set
+            and 
+            ((m.getFlowSummary().getSinkConnected() = 1 
+            and a = node.asExpr())
+            or
+            (m.getFlowSummary().getSinkConnected() = 2
+            and a.getArgument(m.getFlowSummary().getSinkIndex()) = node.asExpr()))
             //check that this sink occurs in a method of a class that has loaded the same lib that we are matching a summary against
             and exists(MethodAccess load |
                 load.getMethod().hasQualifiedName("java.lang", "System", "loadLibrary")
@@ -141,7 +148,12 @@ class FrontEndConfig extends TaintTracking::Configuration {
         or 
         //currently not scoped to when the flow summary says match to a specific flow from cpp
         //ie will match java to java currently
-        exists(JavaLogSink javalog | javalog.getArgument(1) = node.asExpr())
+        exists(JavaLogSink javalog | 
+            //first level field access on an arg
+            javalog.getArgument(1).(FieldAccess).getQualifier() = node.asExpr()
+            or
+            javalog.getArgument(1) = node.asExpr()
+        )
 
     }
 

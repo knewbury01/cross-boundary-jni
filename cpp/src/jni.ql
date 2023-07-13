@@ -33,6 +33,8 @@ abstract class Sink extends DataFlow::Node {
 
 
 abstract class Source extends DataFlow::Node {
+    abstract string getSourceType();
+    
 }
 
 /**
@@ -42,6 +44,7 @@ class JNIFunctionParameterSource extends Source {
     JNIFunctionParameterSource(){
         exists(JNIFunction f| f.getParameter(_) = this.asParameter())
     }
+    override string getSourceType(){ result = "JNIFunctionParameterSource"}
 }
 
 /**
@@ -63,6 +66,7 @@ class InterfacePointerSource extends Source {
         and this.asExpr() = sourceCall
         )
     }
+    override string getSourceType(){ result = "InterfacePointerSource"}
 }
 
 /**
@@ -85,13 +89,25 @@ class CppSpecificSink extends Sink {
     }
 }
 
+/**
+ * an object on the heap is accessible in the Java side
+ * field insensitive
+ */
 class ObjectHeapSink extends Sink {
+    Parameter p;
     ObjectHeapSink(){
-        exists(FunctionCall setField |
+        //todo does this need to be scoped to jni function params only
+        exists(FunctionCall setField, JNIFunction f  |
             setField.getTarget().hasName("SetObjectField")
             and this.asExpr() = setField.getArgument(0)
-            )
+           and f.getParameter(_) = p
+           and DataFlow::localFlow(DataFlow::parameterNode(p), DataFlow::exprNode(this.asExpr()) )
+        )
     }
+    Parameter getParam(){
+        result = p
+    }
+
 }
 
 class BackEndConfig extends TaintTracking::Configuration {
@@ -130,7 +146,8 @@ class BackEndConfig extends TaintTracking::Configuration {
 from BackEndConfig c , DataFlow::Node source, DataFlow::Node sink, 
 string libname, int source_connected, int sink_connected, 
 string source_identifier, int source_index,
-string sink_identifier
+string sink_identifier,
+int sink_index
 where c.hasFlow(source, sink)
 and 
 libname = sink.asExpr().getFile().getBaseName().replaceAll("."+sink.asExpr().getFile().getExtension(), "")
@@ -144,7 +161,13 @@ else
 (source_connected = 0 and source_identifier = "" and source_index = -1)
 and 
 if sink instanceof JNIFunctionReturnSink then 
-(sink_connected = 1 and sink_identifier = sink.(JNIFunctionReturnSink).getFunction().getName())
-else (sink_connected = 0 and sink_identifier = "")
+(sink_connected = 1 and sink_identifier = sink.(JNIFunctionReturnSink).getFunction().getName() and sink_index = -1)
+else ( 
+if sink instanceof ObjectHeapSink then
+(sink_connected = 2 and sink_identifier = sink.(ObjectHeapSink).getFunction().getName()
+and sink_index = sink.(ObjectHeapSink).getParam().getIndex()
+)
+else
+(sink_connected = 0 and sink_identifier = "" and sink_index = -1))
 //libname, source, source_connected, sink, sink_connected, source_identifier, source_index
-select libname, source, source_connected, sink, sink_connected, source_identifier, source_index, sink_identifier
+select libname, source.(Source).getSourceType(), source_connected, sink, sink_connected, source_identifier, source_index, sink_identifier, sink_index
