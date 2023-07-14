@@ -135,10 +135,10 @@ class BackEndConfig extends TaintTracking::Configuration {
             )
         or
         //field getter
-        exists(FunctionCall setField |
-            setField.getTarget().hasName("GetObjectField")
-            and node1.asExpr() = setField.getArgument(2)
-            and node2.asExpr() = setField.getArgument(0)
+        exists(FunctionCall getField |
+            getField.getTarget().hasName("GetObjectField")
+            and node1.asExpr() = getField.getArgument(0)
+            and node2.asExpr() = getField
             )
     }
 }
@@ -147,11 +147,12 @@ from BackEndConfig c , DataFlow::Node source, DataFlow::Node sink,
 string libname, int source_connected, int sink_connected, 
 string source_identifier, int source_index,
 string sink_identifier,
-int sink_index
-where c.hasFlow(source, sink)
+int sink_index,
+string source_type
+where c.hasFlow(source, sink) and
+source_type = source.(Source).getSourceType()
+and libname = sink.asExpr().getFile().getBaseName().replaceAll("."+sink.asExpr().getFile().getExtension(), "")
 and 
-libname = sink.asExpr().getFile().getBaseName().replaceAll("."+sink.asExpr().getFile().getExtension(), "")
-and
 if source instanceof JNIFunctionParameterSource then 
 (source_connected = 1 
     and source_identifier =  source.(JNIFunctionParameterSource).getFunction().getName() 
@@ -160,14 +161,17 @@ if source instanceof JNIFunctionParameterSource then
 else 
 (source_connected = 0 and source_identifier = "" and source_index = -1)
 and 
-if sink instanceof JNIFunctionReturnSink then 
-(sink_connected = 1 and sink_identifier = sink.(JNIFunctionReturnSink).getFunction().getName() and sink_index = -1)
+(if sink instanceof JNIFunctionReturnSink then 
+(sink_connected = 1 and sink_identifier = sink.(JNIFunctionReturnSink).getFunction().getName() 
+and sink_index = -1)
 else ( 
 if sink instanceof ObjectHeapSink then
 (sink_connected = 2 and sink_identifier = sink.(ObjectHeapSink).getFunction().getName()
 and sink_index = sink.(ObjectHeapSink).getParam().getIndex()
 )
 else
-(sink_connected = 0 and sink_identifier = "" and sink_index = -1))
+(sink_connected = 0 and sink_identifier = "" and sink_index = -1)
+)
+)
 //libname, source, source_connected, sink, sink_connected, source_identifier, source_index
-select libname, source.(Source).getSourceType(), source_connected, sink, sink_connected, source_identifier, source_index, sink_identifier, sink_index
+select libname, source_type, source_connected, sink, sink_connected, source_identifier, source_index, sink_identifier, sink_index

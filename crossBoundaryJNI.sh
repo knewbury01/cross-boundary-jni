@@ -29,8 +29,6 @@ if [ -f flows/${1}-flow-summary.csv ]; then
     #currently to prevent collisions on this files usage
     rm ${2}/${1}-flow-summary.csv
 
-    #todo find out if these should be combined for a nice overall source (java) to sink (cpp) view?
-
 else
     echo "---------------------------"
     echo "Could not run cpp analysis."

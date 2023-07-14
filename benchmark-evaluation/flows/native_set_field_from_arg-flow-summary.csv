@@ -1,0 +1,9 @@
+"libname","source_type","source_connected","sink","sink_connected","source_identifier","source_index","sink_identifier","sink_index"
+"set_field_from_arg","JNIFunctionParameterSource",1,"complexData",2,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",2,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",2
+"set_field_from_arg","JNIFunctionParameterSource",1,"complexData",2,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",3,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",2
+"set_field_from_arg","JNIFunctionParameterSource",1,"complexData",2,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",2,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",2
+"set_field_from_arg","JNIFunctionParameterSource",1,"complexData",2,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",3,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",2
+"set_field_from_arg","JNIFunctionParameterSource",1,"fooRet",1,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",2,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",-1
+"set_field_from_arg","JNIFunctionParameterSource",1,"fooRet",1,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",3,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",-1
+"set_field_from_arg","JNIFunctionParameterSource",1,"fooRet",1,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",2,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",-1
+"set_field_from_arg","JNIFunctionParameterSource",1,"fooRet",1,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",3,"Java_org_arguslab_native_1set_1field_1from_1arg_MainActivity_setField",-1

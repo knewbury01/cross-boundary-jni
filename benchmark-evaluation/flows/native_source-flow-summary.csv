@@ -1,0 +1,3 @@
+"libname","col1","source_connected","sink","sink_connected","source_identifier","source_index","sink_identifier","sink_index"
+"source","InterfacePointerSource",0,"imei",1,"",-1,"Java_org_arguslab_native_1source_MainActivity_getImei",-1
+"source","InterfacePointerSource",0,"imei",1,"",-1,"Java_org_arguslab_native_1source_MainActivity_getImei",-1

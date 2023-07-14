@@ -152,6 +152,9 @@ class FrontEndConfig extends TaintTracking::Configuration {
             //first level field access on an arg
             javalog.getArgument(1).(FieldAccess).getQualifier() = node.asExpr()
             or
+            //any level method access on an arg
+            javalog.getArgument(1).(MethodAccess).getQualifier*() = node.asExpr()
+            or
             javalog.getArgument(1) = node.asExpr()
         )
 
