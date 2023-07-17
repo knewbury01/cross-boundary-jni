@@ -1,3 +1,3 @@
-"libname","col1","source_connected","sink","sink_connected","source_identifier","source_index","sink_identifier","sink_index"
+"libname","source_type","source_connected","sink","sink_connected","source_identifier","source_index","sink_identifier","sink_index"
 "multiple_interactions","JNIFunctionParameterSource",1,"call to getCharFromString",0,"Java_org_arguslab_native_1multiple_1interactions_MainActivity_leakImei",2,"",-1
 "multiple_interactions","JNIFunctionParameterSource",1,"call to getCharFromString",0,"Java_org_arguslab_native_1multiple_1interactions_MainActivity_leakImei",2,"",-1

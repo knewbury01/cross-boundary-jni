@@ -8,7 +8,7 @@ The mechanism that this work uses to achieve that is post analysis combination o
 
 ## Flow summary
 
-A flow summary is a description of the dataflow location detected in one analysis that is intended to be consumed in another analysis to create a large dataflow view.
+A flow summary is a description of the dataflow location detected in one analysis that is intended to be consumed in another analysis to create a big picture dataflow view.
 
 The flow summary format that this work uses is csv with the following properties:
 
@@ -38,12 +38,30 @@ Results in `benchmark-evaluation`:
   * `flows` contains the flow summaries for each submodule
   * `results` contains the `sarif` files that have been generated from the Java analysis phase
 
-The `crossBoundary.sh` script **does not** check for the presence of a CodeQL DB lock `db-cpp/default/cache/.lock` that gets generated when running queries in the VSCode editor. If the process fails for a certain submodule, check if this lock prevented subsequent steps in the process from executing.
-
 ### Replication
 
 Can be run via:
 `./runall.sh` <path-to-benchmark-directory>
+
+Assumes the following overall directory structure present and that CodeQL CLI 2.13.3 is on `$PATH`.
+
+```
+~/crossBoundaryRoot/
+├───databases
+│   └─JAVA/
+│   └─CPP/
+├───repos
+│   └─NativeFlowBench
+│     └───buildALL.sh
+├───crossBoundary
+│   ├───flows/
+│   └───results/
+│   └───runall.sh
+```
+
+#### Misc trouble shooting
+
+The `crossBoundary.sh` script **does not** check for the presence of a CodeQL DB lock `db-cpp/default/cache/.lock` that gets generated when running queries in the VSCode editor. If the process fails for a certain submodule, check if this lock prevented subsequent steps in the process from executing.
 
 ## Expansion notes
 

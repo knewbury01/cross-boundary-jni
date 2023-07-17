@@ -6,6 +6,7 @@
 ############
 
 #add build cpp db portion
+#only perform if these are not already created
 #echo "Building cpp database for: $1"
 #./buildALL.sh
 
@@ -14,12 +15,11 @@ echo "Running cpp analysis on: $1"
 ./runCPPPortion.sh $1
 
 if [ -f flows/${1}-flow-summary.csv ]; then
-    #todo change all paths
     cp flows/${1}-flow-summary.csv $2
 
     #run cpp build portion
     echo "Building Java database for: $1"
-    ./buildJavaDB.sh $1
+    ./buildJavaDB.sh $1 $2
 
     #run cpp analyze portion
     echo "Running java analysis on: $1"

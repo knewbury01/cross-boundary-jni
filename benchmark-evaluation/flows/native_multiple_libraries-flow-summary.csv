@@ -1,3 +1,3 @@
-"libname","col1","source_connected","sink","sink_connected","source_identifier","source_index","sink_identifier","sink_index"
+"libname","source_type","source_connected","sink","sink_connected","source_identifier","source_index","sink_identifier","sink_index"
 "master","JNIFunctionParameterSource",1,"call to getCharFromString",0,"Java_org_arguslab_native_1multiple_1libraries_MainActivity_masterSend",2,"",-1
 "master","JNIFunctionParameterSource",1,"call to getCharFromString",0,"Java_org_arguslab_native_1multiple_1libraries_MainActivity_masterSend",2,"",-1
